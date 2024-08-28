@@ -4,33 +4,31 @@ import { createHigherOrderComponent } from '@wordpress/compose'; // Allows creat
 import { InspectorControls } from '@wordpress/block-editor'; // Provides control UI for block editing
 import { PanelBody, ToggleControl, TextControl } from '@wordpress/components'; // UI components for block settings
 import { Fragment } from '@wordpress/element'; // A wrapper to group multiple elements without adding extra nodes to the DOM
-import React from 'react'; // Import React for JSX and cloneElement usage
+import { cloneElement } from '@wordpress/element'; // Use cloneElement from WordPress
 
 /**
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/filters/block-filters/#blocks-registerblocktype}
  * Filter hook used to modify block settings during block registration.
  */
-export const hook = 'blocks.registerBlockType';
+export const registerHook = 'blocks.registerBlockType';
 
 /**
  * Name of the filter, used as a unique identifier.
  */
-export const name = 'sage/cover';
+export const name = 'cafejp/cover'
 
 /**
- * Filter callback function to modify the block's settings.
+ * Filter addAttributes function to modify the block's settings.
  *
  * @param {Object} settings Block settings.
  * @param {string} name Block name.
  * @returns Modified settings with new attributes added.
  */
-export function callback(settings, name) {
-  // Only modify settings for the 'core/cover' block
+export function addAttributes(settings, name) {
   if (name !== 'core/cover') return settings;
 
-  // Use the spread operator to preserve existing settings and add new attributes
   return {
-    ...settings, // Retain all existing settings
+    ...settings, // Retain all existing settings https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
     attributes: {
       ...settings.attributes, // Retain all existing attributes
       loopVideo: {
@@ -56,7 +54,7 @@ export function callback(settings, name) {
 /**
  * Hook used to modify the block's edit component.
  */
-export const editHook = 'editor.BlockEdit';
+export const blockEditHook = 'editor.BlockEdit';
 
 /**
  * Higher-order component (HOC) to modify the block's edit function.
@@ -65,14 +63,13 @@ export const editCallback = createHigherOrderComponent((BlockEdit) => {
   return (props) => {
     const { attributes, setAttributes, name } = props;
 
-    // Only apply modifications to the 'core/cover' block
     if (name !== 'core/cover') {
       return <BlockEdit {...props} />;
     }
 
     const { loopVideo, autoplayVideo, showPlayButton, coverImage } = attributes;
 
-    // Render the modified block editor interface with additional controls
+// Render the modified block editor interface with additional controls
     return (
       <Fragment>
         {/* Render the original BlockEdit component */}
@@ -126,21 +123,19 @@ export const saveHook = 'blocks.getSaveElement';
  * @returns Modified element with custom attributes applied.
  */
 export const saveCallback = (element, blockType, attributes) => {
-  // Only modify the save output for the 'core/cover' block
   if (blockType.name !== 'core/cover') return element;
 
   const { loopVideo, autoplayVideo, showPlayButton, coverImage } = attributes;
-
+  
   // Ensure children elements are processed correctly, filtering out null/undefined elements
   const children = Array.isArray(element.props.children) ? element.props.children.filter(Boolean) : [];
-  console.log('Filtered Children:', children);
-
+  
   // Map over the children to modify any video elements with the specified attributes
   const modifiedChildren = children.map((child) => {
-    console.log('Processing Child:', child);
+	//  checking if a child element of the block is a `<video>` element
     if (child && child.type === 'video') {
-      // Clone the video element and apply the new attributes
-      return React.cloneElement(child, {
+		// Clone the video elements and apply the new attributes
+    	return cloneElement(child, {
         loop: loopVideo,
         autoPlay: autoplayVideo,
         poster: coverImage || child.props.poster,
@@ -149,9 +144,6 @@ export const saveCallback = (element, blockType, attributes) => {
     return child;
   });
 
-  console.log('Modified Children:', modifiedChildren);
-
-  // Return the modified element with the custom video attributes and play button overlay
   return (
     <div {...element.props}>
       {modifiedChildren}
@@ -165,6 +157,6 @@ export const saveCallback = (element, blockType, attributes) => {
 };
 
 // Register the filters to apply the modifications at the appropriate stages
-addFilter(hook, name, callback); // Adds custom attributes to the block
-addFilter(editHook, name, editCallback); // Adds the inspector controls in the editor
-addFilter(saveHook, name, saveCallback); // Modifies the save element
+addFilter(registerHook, name, addAttributes);
+addFilter(blockEditHook, name, editCallback);
+addFilter(saveHook, name, saveCallback);
