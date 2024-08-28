@@ -123,39 +123,40 @@ export const saveHook = 'blocks.getSaveElement';
  * @returns Modified element with custom attributes applied.
  */
 export const saveCallback = (element, blockType, attributes) => {
-  if (blockType.name !== 'core/cover') return element;
-
-  const { loopVideo, autoplayVideo, showPlayButton, coverImage } = attributes;
+	if (blockType.name !== 'core/cover') return element;
   
-  // Ensure children elements are processed correctly, filtering out null/undefined elements
-  const children = Array.isArray(element.props.children) ? element.props.children.filter(Boolean) : [];
+	const { loopVideo, autoplayVideo, showPlayButton, coverImage } = attributes;
   
-  // Map over the children to modify any video elements with the specified attributes
-  const modifiedChildren = children.map((child) => {
-	//  checking if a child element of the block is a `<video>` element
-    if (child && child.type === 'video') {
-		// Clone the video elements and apply the new attributes
-    	return cloneElement(child, {
-        loop: loopVideo,
-        autoPlay: autoplayVideo,
-        poster: coverImage || child.props.poster,
-      });
-    }
-    return child;
-  });
-
-  return (
-    <div {...element.props}>
-      {modifiedChildren}
-      {showPlayButton && (
-        <div className="wp-block-cover__play-button-overlay" style={{ position: 'absolute', zIndex: 10 }}>
-          <button className="wp-block-cover__play-button" aria-label="Play Video" />
-        </div>
-      )}
-    </div>
-  );
-};
-
+	// Ensure children elements are processed correctly, filtering out null/undefined elements
+	const children = Array.isArray(element.props.children) ? element.props.children.filter(Boolean) : [];
+	
+	// Map over the children to modify any video elements with the specified attributes
+	const modifiedChildren = children.map((child) => {
+	  if (child && child.type === 'video') {
+		return cloneElement(child, {
+		  loop: loopVideo,
+		  autoPlay: autoplayVideo,
+		  poster: coverImage || child.props.poster,
+		});
+	  }
+	  return child;
+	});
+  
+	// Check if the play button should be added
+	const playButton = showPlayButton ? (
+	  <div className="wp-block-cover__play-button-overlay" style={{ position: 'absolute', zIndex: 10 }}>
+		<button className="wp-block-cover__play-button" aria-label="Play Video"></button>
+	  </div>
+	) : null;
+  
+	return (
+	  <div {...element.props}>
+		{modifiedChildren}
+		{playButton}
+	  </div>
+	);
+  };
+  
 // Register the filters to apply the modifications at the appropriate stages
 addFilter(registerHook, name, addAttributes);
 addFilter(blockEditHook, name, editCallback);
