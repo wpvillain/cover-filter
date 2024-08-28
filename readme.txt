@@ -1,55 +1,49 @@
 === Cover Filter Block ===
 Contributors:      The WordPress Contributors
-Tags:              block
+Tags:              block, video, cover, Gutenberg
 Tested up to:      6.1
 Stable tag:        0.1.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-Example block scaffolded with Create Block tool.
+A customizable cover block filter created by WP Villain.
 
 == Description ==
 
-This is the long description. No limit, and you can use Markdown (as well as in the following sections).
+The Cover Filter Block allows you to extend the core cover block in WordPress with additional controls and settings. With this plugin, you can add video-specific options like looping, autoplay, and displaying a play button overlay. You can also specify a custom cover image for the video.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+Developed by WP Villain, this plugin enhances the native cover block's functionality, giving you more control over video presentation within your WordPress site.
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
+To install the Cover Filter Block plugin:
 
 1. Upload the plugin files to the `/wp-content/plugins/cover-filter-block` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
+2. Activate the plugin through the 'Plugins' screen in WordPress.
 
+Alternatively, you can download or clone the repository from GitHub, navigate to the plugin's root directory, and run `npm run plugin-zip` to generate the plugin package. Once the package is generated, you can upload it to your WordPress site via the plugin upload feature.
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= What does the Cover Filter Block do? =
 
-An answer to that question.
+The Cover Filter Block adds extra functionality to the core cover block, allowing for additional video settings like loop, autoplay, and a custom play button overlay.
 
-= What about foo bar? =
+= Who created this plugin? =
 
-Answer to foo bar dilemma.
+This plugin was developed by WP Villain, a dedicated team focused on enhancing WordPress block development.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Screenshot of the extended cover block settings in the WordPress block editor.
+2. Screenshot showing the cover block with the play button overlay.
 
 == Changelog ==
 
 = 0.1.0 =
-* Release
+* Initial release of the Cover Filter Block.
 
-== Arbitrary section ==
+== Additional Information ==
 
-You may provide arbitrary sections, in the same format as the ones above. This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation." Arbitrary sections will be shown below the built-in sections outlined above.
+For more detailed usage instructions, refer to the plugin's documentation or visit WP Villain's website. If you encounter any issues or have feature requests, feel free to open an issue on the GitHub repository.
+
