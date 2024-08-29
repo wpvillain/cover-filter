@@ -5,8 +5,30 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.wp-block-create-block-cover-filter-block {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
-}
+.wp-block-cover__play-button-overlay {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 10;
+  }
+  
+  .wp-block-cover__play-button {
+	background-color: rgba(0, 0, 0, 0.6);
+	border: none;
+	color: white;
+	font-size: 24px;
+	padding: 10px 20px;
+	cursor: pointer;
+	border-radius: 50%;
+  }
+  
+  .wp-block-cover__play-button:before {
+	content: '\f215'; /* Dashicon for play button */
+	font-family: "Dashicons";
+  }
+  
+  .wp-block-cover__play-button:hover {
+	background-color: rgba(0, 0, 0, 0.8);
+  }
+  

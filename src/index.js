@@ -7,6 +7,15 @@ import { Fragment } from '@wordpress/element'; // A wrapper to group multiple el
 import { cloneElement } from '@wordpress/element'; // Use cloneElement from WordPress
 
 /**
+ * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
+ * All files containing `style` keyword are bundled together. The code used
+ * gets applied both to the front of your site and to the editor.
+ *
+ * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
+ */
+import './style.scss'
+
+/**
  * @see {@link https://developer.wordpress.org/block-editor/reference-guides/filters/block-filters/#blocks-registerblocktype}
  * Filter hook used to modify block settings during block registration.
  */
@@ -69,6 +78,15 @@ export const editCallback = createHigherOrderComponent((BlockEdit) => {
 
     const { loopVideo, autoplayVideo, showPlayButton, coverImage } = attributes;
 
+	let playButton = null;
+    if (showPlayButton) {
+      playButton = (
+        <div className="wp-block-cover__play-button-overlay" style={{ position: 'absolute', zIndex: 10 }}>
+          <button className="wp-block-cover__play-button" aria-label="Play Video"></button>
+        </div>
+      );
+    }
+
     // Render the modified block editor interface with additional controls
     return (
       <Fragment>
@@ -104,6 +122,7 @@ export const editCallback = createHigherOrderComponent((BlockEdit) => {
             />
           </PanelBody>
         </InspectorControls>
+		{playButton}
       </Fragment>
     );
   };
