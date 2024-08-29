@@ -1,5 +1,5 @@
 === Cover Filter Block ===
-Contributors:      The WordPress Contributors
+Contributors:      WP Villain
 Tags:              block, video, cover, Gutenberg
 Tested up to:      6.1
 Stable tag:        0.1.0
