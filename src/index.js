@@ -15,7 +15,7 @@ export const registerHook = 'blocks.registerBlockType';
 /**
  * Name of the filter, used as a unique identifier.
  */
-export const name = 'cafejp/cover'
+export const name = 'cafejp/cover';
 
 /**
  * Filter addAttributes function to modify the block's settings.
@@ -41,7 +41,7 @@ export function addAttributes(settings, name) {
       },
       showPlayButton: {
         type: 'boolean',
-        default: true,
+        default: false,
       },
       coverImage: {
         type: 'string',
@@ -60,78 +60,54 @@ export const blockEditHook = 'editor.BlockEdit';
  * Higher-order component (HOC) to modify the block's edit function.
  */
 export const editCallback = createHigherOrderComponent((BlockEdit) => {
-	return (props) => {
-	  const { attributes, setAttributes, name } = props;
-  
-	  if (name !== 'core/cover') {
-		return <BlockEdit {...props} />;
-	  }
-  
-	  const { loopVideo, autoplayVideo, showPlayButton, coverImage } = attributes;
-  
-	  // Modify the children elements within the block
-	  const children = Array.isArray(props.children) ? props.children.filter(Boolean) : [];
-	  const modifiedChildren = children.map((child, index) => {
-		if (child && child.type === 'video') {
-		  return cloneElement(child, {
-			loop: loopVideo,
-			autoPlay: autoplayVideo,
-			poster: coverImage || child.props.poster,
-			key: index,
-		  });
-		}
-		return child;
-	  });
-  
-	  // The play button should be conditionally rendered
-	  const playButton = showPlayButton ? (
-		<div className="wp-block-cover__play-button-overlay" style={{ position: 'absolute', zIndex: 10 }}>
-		  <button className="wp-block-cover__play-button" aria-label="Play Video"></button>
-		</div>
-	  ) : null;
-  
-	  return (
-		<Fragment>
-		  {/* Render the original BlockEdit component */}
-		  <BlockEdit {...props} />
-  
-		  {/* Render custom UI controls in the sidebar */}
-		  <InspectorControls>
-			<PanelBody title="Video Options" initialOpen={true}>
-			  <ToggleControl
-				label="Loop Video"
-				checked={loopVideo}
-				onChange={(value) => setAttributes({ loopVideo: value })}
-			  />
-			  <ToggleControl
-				label="Autoplay Video"
-				checked={autoplayVideo}
-				onChange={(value) => setAttributes({ autoplayVideo: value })}
-			  />
-			  <ToggleControl
-				label="Show Play Button"
-				checked={showPlayButton}
-				onChange={(value) => setAttributes({ showPlayButton: value })}
-			  />
-			  <TextControl
-				label="Cover Image URL"
-				value={coverImage}
-				onChange={(value) => setAttributes({ coverImage: value })}
-				help="This image will be used as the cover image for the video."
-			  />
-			</PanelBody>
-		  </InspectorControls>
-  
-		  {/* Render the modified content inside the editor */}
-		  <div {...props.blockProps}>
-			{modifiedChildren}
-			{playButton}
-		  </div>
-		</Fragment>
-	  );
-	};
-  }, 'withCoverControls');
-  
+  return (props) => {
+    const { attributes, setAttributes, name } = props;
+
+    if (name !== 'core/cover') {
+      return <BlockEdit {...props} />;
+    }
+
+    const { loopVideo, autoplayVideo, showPlayButton, coverImage } = attributes;
+
+    // Render the modified block editor interface with additional controls
+    return (
+      <Fragment>
+        {/* Render the original BlockEdit component */}
+        <BlockEdit {...props} />
+        {/* Add custom controls to the block's inspector panel */}
+        <InspectorControls>
+          <PanelBody title="Video Options" initialOpen={true}>
+            {/* Toggle control for looping the video */}
+            <ToggleControl
+              label="Loop Video"
+              checked={loopVideo}
+              onChange={(value) => setAttributes({ loopVideo: value })}
+            />
+            {/* Toggle control for autoplaying the video */}
+            <ToggleControl
+              label="Autoplay Video"
+              checked={autoplayVideo}
+              onChange={(value) => setAttributes({ autoplayVideo: value })}
+            />
+            {/* Toggle control for showing the play button */}
+            <ToggleControl
+              label="Show Play Button"
+              checked={showPlayButton}
+              onChange={(value) => setAttributes({ showPlayButton: value })}
+            />
+            {/* Text control for setting the cover image URL */}
+            <TextControl
+              label="Cover Image URL"
+              value={coverImage}
+              onChange={(value) => setAttributes({ coverImage: value })}
+              help="This image will be used as the cover image for the video."
+            />
+          </PanelBody>
+        </InspectorControls>
+      </Fragment>
+    );
+  };
+}, 'withCoverControls');
 
 /**
  * Hook used to modify the block's save element.
@@ -147,40 +123,43 @@ export const saveHook = 'blocks.getSaveElement';
  * @returns Modified element with custom attributes applied.
  */
 export const saveCallback = (element, blockType, attributes) => {
-	if (blockType.name !== 'core/cover') return element;
-  
-	const { loopVideo, autoplayVideo, showPlayButton, coverImage } = attributes;
-  
-	// Ensure children elements are processed correctly, filtering out null/undefined elements
-	const children = Array.isArray(element.props.children) ? element.props.children.filter(Boolean) : [];
-	
-	// Map over the children to modify any video elements with the specified attributes
-	const modifiedChildren = children.map((child) => {
-	  if (child && child.type === 'video') {
-		return cloneElement(child, {
-		  loop: loopVideo,
-		  autoPlay: autoplayVideo,
-		  poster: coverImage || child.props.poster,
-		});
-	  }
-	  return child;
-	});
-  
-	// Check if the play button should be added
-	const playButton = showPlayButton ? (
-	  <div className="wp-block-cover__play-button-overlay" style={{ position: 'absolute', zIndex: 10 }}>
-		<button className="wp-block-cover__play-button" aria-label="Play Video"></button>
-	  </div>
-	) : null;
-  
-	return (
-	  <div {...element.props}>
-		{modifiedChildren}
-		{playButton}
-	  </div>
-	);
-  };
-  
+  if (blockType.name !== 'core/cover') return element;
+
+  const { loopVideo, autoplayVideo, showPlayButton, coverImage } = attributes;
+
+  // Ensure children elements are processed correctly, filtering out null/undefined elements
+  const children = Array.isArray(element.props.children) ? element.props.children.filter(Boolean) : [];
+
+  // Map over the children to modify any video elements with the specified attributes
+  const modifiedChildren = children.map((child) => {
+    if (child && child.type === 'video') {
+      return cloneElement(child, {
+        loop: loopVideo,
+        autoPlay: autoplayVideo,
+        poster: coverImage || child.props.poster,
+      });
+    }
+    return child;
+  });
+
+  // Check if the play button should be added
+  let playButton = null;
+  if (showPlayButton) {
+    playButton = (
+      <div className="wp-block-cover__play-button-overlay" style={{ position: 'absolute', zIndex: 10 }}>
+        <button className="wp-block-cover__play-button" aria-label="Play Video"></button>
+      </div>
+    );
+  }
+
+  return (
+    <div {...element.props}>
+      {modifiedChildren}
+      {playButton}
+    </div>
+  );
+};
+
 // Register the filters to apply the modifications at the appropriate stages
 addFilter(registerHook, name, addAttributes);
 addFilter(blockEditHook, name, editCallback);
