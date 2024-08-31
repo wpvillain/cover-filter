@@ -2,9 +2,14 @@
 import { addFilter } from '@wordpress/hooks'; // Allows adding filters to modify block behavior
 import { createHigherOrderComponent } from '@wordpress/compose'; // Allows creating higher-order components (HOCs)
 import { InspectorControls } from '@wordpress/block-editor'; // Provides control UI for block editing
-import { PanelBody, ToggleControl, TextControl } from '@wordpress/components'; // UI components for block settings
-import { Fragment } from '@wordpress/element'; // A wrapper to group multiple elements without adding extra nodes to the DOM
-import { cloneElement } from '@wordpress/element'; // Use cloneElement from WordPress
+import { ColorPicker, PanelBody, ToggleControl, TextControl } from '@wordpress/components'; // UI components for block settings
+/**
+ * React utilities in WordPress
+ * Element is a package that builds on top of React and provide a set of utilities to work with React 
+ * components and React elements.
+ * @link https://developer.wordpress.org/block-editor/reference-guides/packages/packages-element/
+ */
+import { Fragment, cloneElement } from '@wordpress/element';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -52,10 +57,16 @@ export function addAttributes(settings, name) {
         type: 'boolean',
         default: false,
       },
+	  playButtonSvg: {
+        type: 'string',
+        default: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M0 0h24v24H0z" fill="none"/><path d="M8 5v14l11-7z"/></svg>',
+      },
       coverImage: {
         type: 'string',
         default: '',
       },
+	  playButtonIcon: { type: 'string', default: '▶️' }, // Default to a simple play icon
+      playButtonColor: { type: 'string', default: '#ffffff' }, // Default to white color
     },
   };
 }
@@ -76,16 +87,28 @@ export const editCallback = createHigherOrderComponent((BlockEdit) => {
       return <BlockEdit {...props} />;
     }
 
-    const { loopVideo, autoplayVideo, showPlayButton, coverImage } = attributes;
+    const { loopVideo, autoplayVideo, showPlayButton, coverImage, playButtonSvg, playButtonColor } = attributes;
+
+	// Handle play button click
+    const handlePlayClick = () => {
+		if (videoRef.current) {
+		  videoRef.current.play();
+		}
+	  };
 
 	let playButton = null;
     if (showPlayButton) {
-      playButton = (
-        <div className="wp-block-cover__play-button-overlay" style={{ position: 'absolute', zIndex: 10 }}>
-          <button className="wp-block-cover__play-button" aria-label="Play Video"></button>
-        </div>
-      );
-    }
+		playButton = (
+		  <div className="wp-block-cover__play-button-overlay" style={{ position: 'absolute', zIndex: 10 }}>
+			<button
+			  className="wp-block-cover__play-button"
+			  style={{ color: playButtonColor }}
+			  aria-label="Play Video"
+			  dangerouslySetInnerHTML={{ __html: playButtonSvg }}
+			/>
+		  </div>
+		);
+	  }
 
     // Render the modified block editor interface with additional controls
     return (
@@ -120,6 +143,21 @@ export const editCallback = createHigherOrderComponent((BlockEdit) => {
               onChange={(value) => setAttributes({ coverImage: value })}
               help="This image will be used as the cover image for the video."
             />
+			{showPlayButton && (
+              <>
+                <ColorPicker
+                  label="Play Button Color"
+                  color={playButtonColor}
+                  onChangeComplete={(value) => setAttributes({ playButtonColor: value.hex })}
+                />
+                <TextControl
+                  label="Play Button SVG"
+                  value={playButtonSvg}
+                  onChange={(value) => setAttributes({ playButtonSvg: value })}
+                  help="Enter the SVG markup for the play button."
+                />
+              </>
+            )}
           </PanelBody>
         </InspectorControls>
 		{playButton}
@@ -144,7 +182,7 @@ export const saveHook = 'blocks.getSaveElement';
 export const saveCallback = (element, blockType, attributes) => {
   if (blockType.name !== 'core/cover') return element;
 
-  const { loopVideo, autoplayVideo, showPlayButton, coverImage } = attributes;
+  const { loopVideo, autoplayVideo, showPlayButton, coverImage, playButtonSvg, playButtonColor } = attributes;
 
   // Ensure children elements are processed correctly, filtering out null/undefined elements
   const children = Array.isArray(element.props.children) ? element.props.children.filter(Boolean) : [];
@@ -166,7 +204,12 @@ export const saveCallback = (element, blockType, attributes) => {
   if (showPlayButton) {
     playButton = (
       <div className="wp-block-cover__play-button-overlay" style={{ position: 'absolute', zIndex: 10 }}>
-        <button className="wp-block-cover__play-button" aria-label="Play Video"></button>
+        <button
+          className="wp-block-cover__play-button"
+          style={{ color: playButtonColor }}
+          aria-label="Play Video"
+          dangerouslySetInnerHTML={{ __html: playButtonSvg }}
+        />
       </div>
     );
   }

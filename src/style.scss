@@ -23,12 +23,14 @@
 	border-radius: 50%;
   }
   
-  .wp-block-cover__play-button:before {
-	content: '\f215'; /* Dashicon for play button */
-	font-family: "Dashicons";
-  }
-  
   .wp-block-cover__play-button:hover {
 	background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .wp-block-cover__play-button {
+	font-size: 2rem; /* Adjust the size as needed */
+	background: transparent;
+	border: none;
+	cursor: pointer;
   }
   
