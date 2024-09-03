@@ -21,5 +21,31 @@
  */
 
 /* eslint-disable no-console */
-console.log( 'Hello World! (from create-block-cover-filter-block block)' );
+// console.log( 'Hello World! (from create-block-cover-filter-block block)' );
 /* eslint-enable no-console */
+
+document.addEventListener('DOMContentLoaded', function () {
+    /// console.log('Script is running');
+    
+    const playButtonOverlays = document.querySelectorAll('.wp-block-cover__play-button-overlay');
+    // console.log('Found overlays:', playButtonOverlays);
+  
+    playButtonOverlays.forEach((overlay) => {
+      const button = overlay.querySelector('.wp-block-cover__play-button');
+      
+      if (button) {
+        // console.log('Attaching click listener to:', button);
+        button.addEventListener('click', function () {
+          console.log('Play button clicked!');
+          const videoElement = overlay.closest('.wp-block-cover').querySelector('video');
+          if (videoElement) {
+            videoElement.play();
+            overlay.style.display = 'none';
+          }
+        });
+      } else {
+        console.log('No button found in overlay:', overlay);
+      }
+    });
+  });
+    

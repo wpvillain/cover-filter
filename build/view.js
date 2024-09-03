@@ -1,1 +1,1 @@
-console.log("Hello World! (from create-block-cover-filter-block block)");
+document.addEventListener("DOMContentLoaded",(function(){document.querySelectorAll(".wp-block-cover__play-button-overlay").forEach((o=>{const e=o.querySelector(".wp-block-cover__play-button");e?e.addEventListener("click",(function(){console.log("Play button clicked!");const e=o.closest(".wp-block-cover").querySelector("video");e&&(e.play(),o.style.display="none")})):console.log("No button found in overlay:",o)}))}));
