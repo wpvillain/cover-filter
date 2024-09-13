@@ -2,16 +2,9 @@
 
 <p align="center">
     <img alt="Wp Villain" src="https://github.com/user-attachments/assets/e7161f40-fdd1-4836-b73f-5a0a2bdebe9d" height="150" >
+    A customizable cover block filter created by WP Villain.
 </p>
 
-**Contributors:** WP Villain  
-**Tags:** block, video, cover, Gutenberg  
-**Tested up to:** 6.1  
-**Stable tag:** 0.1.0  
-**License:** GPL-2.0-or-later  
-**License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
-
-A customizable cover block filter created by WP Villain.
 
 ## Description
 
@@ -49,5 +42,13 @@ This plugin was developed by WP Villain, a dedicated team focused on enhancing W
 - Initial release of the Cover Filter Block.
 
 ## Additional Information
+
+**Contributors:** WP Villain  
+**Tags:** block, video, cover, Gutenberg  
+**Tested up to:** 6.1  
+**Stable tag:** 0.1.0  
+**License:** GPL-2.0-or-later  
+**License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
+
 
 For more detailed usage instructions, refer to the plugin's documentation or visit WP Villain's website. If you encounter any issues or
