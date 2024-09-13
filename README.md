@@ -1,7 +1,8 @@
 # Cover Block Video Filter
 
 <p align="center">
-![WP Villain Logo](./wpvilain.png)
+![wpvilain](https://github.com/user-attachments/assets/329561cb-91d4-404b-829f-60671b543a68)
+
 </p>
 
 **Contributors:** WP Villain  
