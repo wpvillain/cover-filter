@@ -1,6 +1,8 @@
 # Cover Block Video Filter
 
-![WP Villain Logo](wpvillain.png)
+<p align="center">
+![WP Villain Logo](./wpvilain.png)
+</p>
 
 **Contributors:** WP Villain  
 **Tags:** block, video, cover, Gutenberg  
