@@ -1,5 +1,7 @@
 # Cover Block Video Filter
 
+![WP Villain Logo](wpvillain.png)
+
 **Contributors:** WP Villain  
 **Tags:** block, video, cover, Gutenberg  
 **Tested up to:** 6.1  
@@ -46,4 +48,4 @@ This plugin was developed by WP Villain, a dedicated team focused on enhancing W
 
 ## Additional Information
 
-For more detailed usage instructions, refer to the plugin's documentation or visit WP Villain's website. If you encounter any issues or have feature requests, feel free to open an issue on the GitHub repository.
+For more detailed usage instructions, refer to the plugin's documentation or visit WP Villain's website. If you encounter any issues or
