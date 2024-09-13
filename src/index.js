@@ -63,6 +63,10 @@ export function addAttributes(settings, name) {
         type: 'string',
         default: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M0 0h24v24H0z" fill="none"/><path d="M8 5v14l11-7z"/></svg>',
       },
+	  pauseButtonSvg: {
+		type: 'string',
+		default: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>',
+	},
       coverImage: {
         type: 'string',
         default: '',
@@ -189,50 +193,46 @@ export const saveHook = 'blocks.getSaveElement';
  * @returns Modified element with custom attributes applied.
  */
 export const saveCallback = (element, blockType, attributes) => {
-	// Only modify the 'core/cover' block
-	if (blockType.name !== 'core/cover') return element;
-  
-	const { loopVideo, autoplayVideo, showPlayButton, coverImage, playButtonSvg, playButtonColor } = attributes;
-  
-	// Ensure children elements are processed correctly, filtering out null/undefined elements
-	const children = Array.isArray(element.props.children) ? element.props.children.filter(Boolean) : [];
-  
-	// Map over the children to modify any video elements with the specified attributes
-	const modifiedChildren = children.map((child) => {
-	  if (child && child.type === 'video') {
-		// Add ref to video element to handle play logic
-		return cloneElement(child, {
-		  loop: loopVideo,
-		  autoPlay: autoplayVideo,
-		  poster: coverImage || child.props.poster,
-		});
-	  }
-	  return child;
-	});
-  
-	// Check if the play button should be added
-	let playButton = null;
-	if (showPlayButton) {
-	  playButton = (
-		<div className="wp-block-cover__play-button-overlay" style={{ position: 'absolute', zIndex: 10 }}>
-		  <button
-			className="wp-block-cover__play-button"
-			style={{ color: playButtonColor }}
-			aria-label="Play Video"
-			dangerouslySetInnerHTML={{ __html: playButtonSvg }}
-		  />
-		</div>
-	  );
-	}
-  
-	// Return the modified element with the play button overlay
-	return (
-	  <div {...element.props}>
-		{modifiedChildren}
-		{playButton}
-	  </div>
-	);
-  };  
+    if (blockType.name !== 'core/cover') return element;
+    
+    const { loopVideo, autoplayVideo, showPlayButton, coverImage, playButtonSvg, pauseButtonSvg, playButtonColor } = attributes;
+
+    const children = Array.isArray(element.props.children) ? element.props.children.filter(Boolean) : [];
+    const modifiedChildren = children.map((child) => {
+        if (child && child.type === 'video') {
+            return cloneElement(child, {
+                loop: loopVideo,
+                autoPlay: autoplayVideo,
+                poster: coverImage || child.props.poster,
+            });
+        }
+        return child;
+    });
+
+    let playButton = null;
+    if (showPlayButton) {
+        playButton = (
+            <div className="wp-block-cover__play-button-overlay" style={{ position: 'absolute', zIndex: 10 }}>
+                <button
+                    className="wp-block-cover__play-button"
+                    style={{ color: playButtonColor }}
+                    aria-label="Play Video"
+                    data-play-icon={playButtonSvg}
+                    data-pause-icon={pauseButtonSvg}
+                    dangerouslySetInnerHTML={{ __html: playButtonSvg }} // Initially the play icon
+                />
+            </div>
+        );
+    }
+
+    return (
+        <div {...element.props}>
+            {modifiedChildren}
+            {playButton}
+        </div>
+    );
+};
+
 
 // Register the filters to apply the modifications at the appropriate stages
 addFilter(registerHook, name, addAttributes);
