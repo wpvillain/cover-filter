@@ -2,9 +2,11 @@
 
 <p align="center">
     <img alt="Wp Villain" src="https://github.com/user-attachments/assets/e7161f40-fdd1-4836-b73f-5a0a2bdebe9d" height="150" >
-    A customizable cover block filter created by WP Villain.
 </p>
 
+<p align="center">
+    A customizable cover block filter created by WP Villain.
+</p>
 
 ## Description
 
