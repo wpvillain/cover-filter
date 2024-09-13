@@ -1,8 +1,7 @@
 # Cover Block Video Filter
 
 <p align="center">
-![wpvilain](https://github.com/user-attachments/assets/329561cb-91d4-404b-829f-60671b543a68)
-
+    <img alt="Cafe JP Coen" src="wpvillain.png" height="150" >
 </p>
 
 **Contributors:** WP Villain  
